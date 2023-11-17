@@ -1,0 +1,31 @@
+name: kustomize
+description: kustomize
+author: yyj
+
+inputs:
+  image:
+    description: 123
+    required: true
+
+
+runs:
+  using: composite
+  steps:
+    - name: pull kubeconfig
+      run: |
+        mkdir -p ${{ github.workspace }}/kubeconf
+        echo "${{ secrets.KUBECONFIG_SANDBOX }}" > ${{ github.workspace }}/kubeconf/config
+        export KUBECONFIG=${{ github.workspace }}/kubeconf/config
+
+    - name: replace yaml
+      run: |
+        sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ github.workspace }}/ci/*
+
+    - name: kustomize
+      run: |
+        kustomize edit set image ${{ inputs.image }}
+        kustomize build ${{ github.workspace }}/ci |tee install.yml
+        cat install.yml
+        echo '------'
+        ls
+
