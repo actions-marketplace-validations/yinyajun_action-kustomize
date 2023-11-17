@@ -13,7 +13,7 @@ inputs:
 
   kustomize_dir :
     description: kustomize directory
-    required: true
+    default: ${{ github.repository }}/ci
 
 
 runs:
