@@ -7,6 +7,10 @@ inputs:
     description: 123
     required: true
 
+  kube_config:
+    description: 123
+    required: true
+
 
 runs:
   using: composite
@@ -14,12 +18,16 @@ runs:
     - name: pull kubeconfig
       run: |
         mkdir -p ${{ github.workspace }}/kubeconf
-        echo "${{ secrets.KUBECONFIG_SANDBOX }}" > ${{ github.workspace }}/kubeconf/config
+        echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
+      shell: bash 
+
 
     - name: replace yaml
       run: |
         sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ github.workspace }}/ci/*
+      shell: bash 
+
 
     - name: kustomize
       run: |
@@ -28,4 +36,4 @@ runs:
         cat install.yml
         echo '------'
         ls
-
+      shell: bash 
