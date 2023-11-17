@@ -3,12 +3,16 @@ description: kustomize
 author: yyj
 
 inputs:
-  image:
-    description: 123
+  image_name:
+    description: image name
     required: true
 
   kube_config:
-    description: 123
+    description: kube config
+    required: true
+
+  kustomize_dir :
+    description: kustomize directory
     required: true
 
 
@@ -23,16 +27,11 @@ runs:
       shell: bash 
 
 
-    - name: replace yaml
-      run: |
-        sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ github.workspace }}/ci/*
-      shell: bash 
-
 
     - name: kustomize
       run: |
-        kustomize edit set image ${{ inputs.image }}
-        kustomize build ${{ github.workspace }}/ci |tee install.yml
+        kustomize edit set image ${{ inputs.image_name }}
+        kustomize build ${{ inputs.kustomize_dir }} |tee install.yml
         cat install.yml
         echo '------'
         ls
