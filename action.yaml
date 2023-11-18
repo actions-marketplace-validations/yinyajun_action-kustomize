@@ -46,7 +46,6 @@ runs:
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
         kubectl apply -n ${{ inputs.namespace }} -k ${{ inputs.directory }}
-
       shell: bash
 
     - name: kubectl check
@@ -56,11 +55,13 @@ runs:
 
     - name: notify ok
       if: ${{ success() }}
-      run: echo "ok"   
+      run: echo "ok" 
+      shell: bash  
 
     - name: notify not ok
       if: ${{ failure() }}
       run: echo "not ok"
+      shell: bash
 
     - name: clear
       if: always()
