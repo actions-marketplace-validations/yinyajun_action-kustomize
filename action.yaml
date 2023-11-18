@@ -11,32 +11,29 @@ inputs:
     description: kube config
     required: true
 
-  # context:
-  #   description: context name
-  #   required: true
 
-  # kustomize_dir :
-  #   description: kustomize directory
-  #   default: ${{ github.repository }}/ci
+
 
 
 runs:
   using: composite
   steps:
-    - name: pull kubeconfig
+    - name: ba
       run: |
         mkdir -p ${{ github.workspace }}/kubeconf
         echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
-        cat ${{ github.workspace }}/kubeconf/config
-        echo "---------"
-
         kubectl config use-context cls-22fbpa6r-100000669790-context-default
+             
 
-        
+        cd ci
         sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ github.workspace }}/ci/*
+        
         kustomize edit set image ${{ inputs.image }}
         kustomize build ${{ github.workspace }}/ci |tee install.yml
+        
         cat install.yml
       shell: bash
+
+
 
