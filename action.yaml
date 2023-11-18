@@ -28,11 +28,8 @@ runs:
         mkdir -p ${{ github.workspace }}/kubeconf
         echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
-
         kubectl config use-context ${{ inputs.context }}
 
-        sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ inputs.directory }}/*
-        
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
         kustomize build ${{ inputs.directory }} |tee install.yml
@@ -40,5 +37,10 @@ runs:
         cat install.yml
       shell: bash
 
-
+    - name: ba
+      run: |
+        ls
+        echo "---"
+        ls ci
+      shell: bash
 
