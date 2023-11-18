@@ -23,17 +23,22 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: ba
+    - name: pull kube config
       run: |
         mkdir -p ${{ github.workspace }}/kubeconf
         echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
-        kubectl config use-context ${{ inputs.context }}
+      shell: bash
 
+    - name: switch to TKE context
+      run: kubectl config use-context ${{ inputs.context }}
+      shell: bash
+
+    - name: kustomize build
+      run: |
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
         kustomize build ${{ inputs.directory }} |tee install.yml
-        
         cat install.yml
       shell: bash
 
@@ -41,8 +46,10 @@ runs:
       run: |
         rm -rf ${{ github.workspace }}/kubeconf
         rm -rf ${{ inputs.directory }}/install.yml
+      shell: bash
 
-    - name: ba2
+
+    - name: check
       run: |
         ls
         echo "---"
