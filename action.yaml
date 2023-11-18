@@ -38,4 +38,5 @@ runs:
         kustomize edit set image ${{ inputs.image }}
         kustomize build ${{ github.workspace }}/ci |tee install.yml
         cat install.yml
+      shell: bash
 
