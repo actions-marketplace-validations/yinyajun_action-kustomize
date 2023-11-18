@@ -32,7 +32,6 @@ runs:
         kubectl config use-context ${{ inputs.context }}
              
 
-        cd ci
         sed -i "s/cicd-test/${{ env.APP_NAME }}/g" ${{ inputs.directory }}/*
         
         kustomize edit set image ${{ inputs.image }}
