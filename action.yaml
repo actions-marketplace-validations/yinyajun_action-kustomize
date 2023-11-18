@@ -4,12 +4,12 @@ author: yyj
 
 inputs:
   name:
-  description: deployment name
-  required: true
+    description: deployment name
+    required: true
 
   namespace:
-  description: k8s namespace
-  required: true
+    description: k8s namespace
+    required: true
 
   image:
     description: image name
@@ -42,14 +42,6 @@ runs:
       shell: bash
 
     - name: kustomize build
-      run: |
-        cd ${{ inputs.directory }}
-        kustomize edit set image ${{ inputs.image }}
-        kustomize build ${{ inputs.directory }}
-        kubectl apply -n ${{ inputs.namespace }} -k ${{ inputs.directory }}
-      shell: bash
-
-    - name: kubectl apply
       run: |
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
