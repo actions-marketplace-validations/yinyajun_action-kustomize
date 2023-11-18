@@ -11,7 +11,9 @@ inputs:
     description: kube config
     required: true
 
-
+  context:
+    description: context name
+    required: true
 
 
 
@@ -23,7 +25,8 @@ runs:
         mkdir -p ${{ github.workspace }}/kubeconf
         echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
-        kubectl config use-context cls-22fbpa6r-100000669790-context-default
+
+        kubectl config use-context ${{ inputs.context }}
              
 
         cd ci
