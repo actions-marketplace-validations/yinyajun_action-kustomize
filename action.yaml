@@ -3,12 +3,16 @@ description: kustomize
 author: yyj
 
 inputs:
-  image_name:
+  image:
     description: image name
     required: true
 
   kube_config:
     description: kube config
+    required: true
+
+  context:
+    description: context name
     required: true
 
   kustomize_dir :
@@ -26,6 +30,8 @@ runs:
         export KUBECONFIG=${{ github.workspace }}/kubeconf/config
       shell: bash 
 
+    - name: switch to TKE context
+      run: kubectl config use-context ${{ inputs.context }}
 
 
     - name: kustomize
