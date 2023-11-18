@@ -12,10 +12,11 @@ inputs:
     required: true
 
   context:
-    description: context name
+    description: TKE context name
     required: true
 
   directory:
+    description: kustomize directory
     default: ${{ github.workspace }}/ci
 
 
@@ -47,19 +48,3 @@ runs:
         rm -rf ${{ github.workspace }}/kubeconf
         rm -rf ${{ inputs.directory }}/install.yml
       shell: bash
-
-
-    - name: check
-      run: |
-        ls
-        echo "---"
-        ls ci
-      shell: bash
-
-
-
-
-
-
-
-
