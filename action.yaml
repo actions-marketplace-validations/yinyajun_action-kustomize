@@ -20,7 +20,6 @@ inputs:
     default: ${{ github.workspace }}/ci
 
 
-
 runs:
   using: composite
   steps:
@@ -39,8 +38,8 @@ runs:
       run: |
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
-        kustomize build ${{ inputs.directory }} |tee install.yml
-        cat install.yml
+        kustomize build ${{ inputs.directory }}
+        kubectl apply -k ${{ inputs.directory }}
       shell: bash
 
     - name: clear
@@ -48,3 +47,5 @@ runs:
         rm -rf ${{ github.workspace }}/kubeconf
         rm -rf ${{ inputs.directory }}/install.yml
       shell: bash
+
+
