@@ -37,7 +37,7 @@ runs:
 
     - name: kustomize
       run: |
-        kustomize edit set image ${{ inputs.image_name }}
+        kustomize edit set image ${{ inputs.image }}
         kustomize build ${{ inputs.kustomize_dir }} |tee install.yml
         cat install.yml
         echo '------'
