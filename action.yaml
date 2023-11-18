@@ -37,10 +37,22 @@ runs:
         cat install.yml
       shell: bash
 
-    - name: ba
+    - name: clear
+      run: |
+        rm -rf ${{ github.workspace }}/kubeconf
+        rm -rf ${{ inputs.directory }}/install.yml
+
+    - name: ba2
       run: |
         ls
         echo "---"
         ls ci
       shell: bash
+
+
+
+
+
+
+
 
