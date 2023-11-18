@@ -45,15 +45,13 @@ runs:
       run: |
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
-        kustomize build ${{ inputs.directory }}
         kubectl apply -n ${{ inputs.namespace }} -k ${{ inputs.directory }}
+
       shell: bash
 
     - name: kubectl check
       run: |
         kubectl rollout status deployment/${{ inputs.name }} -n ${{ inputs.namespace }}
-        kubectl get services -o wide -n ${{ inputs.namespace }}
-        kubectl get hpa -o wide -n ${{ inputs.namespace }}
       shell: bash   
 
     - name: clear
