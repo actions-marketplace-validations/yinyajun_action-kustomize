@@ -5,11 +5,11 @@ author: yyj
 inputs:
   name:
     description: deployment name
-    required: true
+    default: ${{ env.APP_NAME }}
 
   namespace:
     description: k8s namespace
-    required: true
+    default: ${{ env.NAMESPACE }}
 
   image:
     description: image name
