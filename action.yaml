@@ -31,16 +31,13 @@ runs:
   using: composite
   steps:
     - name: pull kube config
-      run: |
-        mkdir -p ${{ github.workspace }}/kubeconf
-        echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kubeconf/config
-        export KUBECONFIG=${{ github.workspace }}/kubeconf/config
+      run: echo "${{ inputs.kube_config }}" > ${{ github.workspace }}/kc
       shell: bash
 
     - name: switch to TKE context
       run: |
-        kubectl config get-contexts
-        kubectl config use-context ${{ inputs.context }}
+        kubectl --kubeconfig=${{ github.workspace }}/kc config get-contexts
+        kubectl --kubeconfig=${{ github.workspace }}/kc config use-context ${{ inputs.context }}
       shell: bash
 
     - name: deploy
@@ -56,7 +53,7 @@ runs:
 
     - name: clear
       if: always()
-      run: rm -rf ${{ github.workspace }}/kubeconf
+      run: rm -rf ${{ github.workspace }}/kc
       shell: bash
 
 
