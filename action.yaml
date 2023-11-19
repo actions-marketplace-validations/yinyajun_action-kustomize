@@ -41,26 +41,16 @@ runs:
       run: kubectl config use-context ${{ inputs.context }}
       shell: bash
 
-    - name: kustomize build
+    - name: deploy
       run: |
         cd ${{ inputs.directory }}
         kustomize edit set image ${{ inputs.image }}
         kubectl apply -n ${{ inputs.namespace }} -k ${{ inputs.directory }}
       shell: bash
 
-    - name: kubectl check
+    - name: verify
       run: |
         kubectl rollout status deployment/${{ inputs.name }} -n ${{ inputs.namespace }}
-      shell: bash
-
-    - name: notify ok
-      if: ${{ success() }}
-      run: echo "ok" 
-      shell: bash  
-
-    - name: notify not ok
-      if: ${{ failure() }}
-      run: echo "not ok"
       shell: bash
 
     - name: clear
