@@ -25,7 +25,7 @@ inputs:
 
   directory:
     description: kustomize directory
-    default: ${{ github.workspace }}/ci
+    required: true
 
 runs:
   using: composite
@@ -38,7 +38,9 @@ runs:
       shell: bash
 
     - name: switch to TKE context
-      run: kubectl config use-context ${{ inputs.context }}
+      run: |
+        kubectl config get-contexts
+        kubectl config use-context ${{ inputs.context }}
       shell: bash
 
     - name: deploy
